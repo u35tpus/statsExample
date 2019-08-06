@@ -68,6 +68,35 @@ public class AppTest
         app.loop();
     }
 
+    /*
+        this test checks that app gracefully processes null input
+     */
+    public void testNullInput() {
+        final AtomicInteger limit = new AtomicInteger(2);
+
+
+        AppInput appInput = () ->    {
+            int ctr = limit.decrementAndGet();
+            if (ctr > 0) {
+                return null;
+            }
+            if (ctr == 0) {
+                return "s";
+            }
+
+            return "exit";
+        };
+
+
+        final ArrayDeque<String> outputs = new ArrayDeque<>();
+
+        final AppOutput appOutput = (s) -> outputs.addLast(s);
+
+
+        App app = new App(appInput, appOutput);
+        app.loop();
+    }
+
 
     public void execTestInFolder(String folderName) {
         final ArrayDeque<String> inputs = readFile(folderName + "/in.txt");
