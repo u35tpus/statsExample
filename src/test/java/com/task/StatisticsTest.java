@@ -233,6 +233,38 @@ public class StatisticsTest
         assertEquals(0, res.compareTo(s.getMean()));
     }
 
+    public void testSeriesMinDoubles() {
+        long n = 100;
+        Statistics s = new Statistics();
+
+        BigDecimal add = new BigDecimal(Double.MIN_VALUE);
+
+        for (int i = 1; i <= n; i++) {
+            s.put(add);
+        }
+        BigDecimal res = add;
+        assertEquals(0, res.compareTo(s.getMean()));
+    }
+
+    public void testSeriesMinMaxDoubles() {
+        long n = 100;
+        Statistics s = new Statistics();
+
+        BigDecimal add = new BigDecimal(Double.MAX_VALUE);
+
+        for (int i = 1; i <= n; i++) {
+            s.put(add);
+        }
+
+        add = add.multiply(new BigDecimal(-1));
+        for (int i = 1; i <= n; i++) {
+            s.put(add);
+        }
+        BigDecimal res = BigDecimal.ZERO;
+
+        assertEquals(0, res.compareTo(s.getMean()));
+    }
+
 
     public void testSeriesDoubleN() {
         long n = 100_000;
