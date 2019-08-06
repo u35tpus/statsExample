@@ -130,7 +130,7 @@ public class StatisticsTest
     public void testNull() {
         Statistics statistics = new Statistics();
         try {
-            statistics.put((String)null);
+            statistics.put((String) null);
             fail();
         } catch (Exception e) {
             assert e instanceof IllegalArgumentException;
@@ -148,23 +148,20 @@ public class StatisticsTest
         Statistics s1 = new Statistics();
         Statistics s2 = new Statistics();
 
+        assert s1.equals(s1);
+        assert !s1.equals(null);
+        assert !s1.equals(new Object());
         assert s1.equals(s2);
         assert s1.hashCode() == s2.hashCode();
 
         assertEquals(s1.hashCode(), s2.hashCode());
-
-        s1.put(BigDecimal.ONE);
-        assert !s1.equals(s2);
-        assert s1.hashCode() != s2.hashCode();
-
-        s2.put(BigDecimal.ONE);
-        assert s1.equals(s2);
 
         Random rand = new Random();
         rand.setSeed(System.nanoTime());
 
         int count = 100;
 
+        //check that mean calculation doesn't depend on the orders of put
         List<Double> doubles = new ArrayList<>();
         for (int i = 0; i < count; i++) {
             double d = rand.nextDouble();
@@ -176,8 +173,46 @@ public class StatisticsTest
             s2.put(new BigDecimal(doubles.get(i)));
         }
 
+        assertEquals(0, s1.getMean().compareTo(s2.getMean()));
+
         assertEquals(s1, s2);
 
         assert s1.hashCode() == s2.hashCode();
+    }
+
+    public void testEquals2() {
+        Statistics s1 = new Statistics();
+        Statistics s2 = new Statistics();
+
+        s1.put(BigDecimal.ONE);
+        assert !s1.equals(s2);
+        assert s1.hashCode() != s2.hashCode();
+
+        s2.put(BigDecimal.ONE);
+        assert s1.equals(s2);
+
+        s1.put(BigDecimal.ZERO);
+        assert !s1.equals(s2);
+
+        s2.put(BigDecimal.ZERO);
+        assert s1.equals(s2);
+
+        s1.put(new BigDecimal(2));
+        assert !s1.equals(s2);
+
+        s2.put(new BigDecimal(2));
+        assert s1.equals(s2);
+
+        s1.put(new BigDecimal(1.5D));
+        assert !s1.equals(s2);
+
+        s2.put(new BigDecimal(1.5D));
+        assert s1.equals(s2);
+
+        s1.put(new BigDecimal(0.5D));
+        s1.put(new BigDecimal(0.5D));
+        s1.put(new BigDecimal(0.5D));
+        s2.put(new BigDecimal(1.5D));
+        assert !s1.equals(s2);
     }
 }

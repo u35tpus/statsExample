@@ -1,0 +1,9 @@
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+min 1.0000000000 [1]
+max 2.0000000000 [2]
+mean 2.0000000000 [2]
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats

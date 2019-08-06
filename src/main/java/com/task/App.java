@@ -1,6 +1,9 @@
 package com.task;
 
-import com.task.input.ConsoleInput;
+import com.task.io.AppInput;
+import com.task.io.AppOutput;
+import com.task.io.ConsoleInput;
+import com.task.io.ConsoleOutput;
 import com.task.lib.Statistics;
 import java.math.BigDecimal;
 import java.util.logging.Level;
@@ -10,17 +13,27 @@ public class App {
 
     static Logger logger = Logger.getLogger(App.class.getName());
     private Statistics statisticsLong = new Statistics();
+    private final AppInput appInput;
+    private final AppOutput appOutput;
+
+    public App(AppInput appInput, AppOutput appOutput){
+        this.appInput = appInput;
+        this.appOutput = appOutput;
+    }
 
     void loop() {
-        ConsoleInput consoleInput = new ConsoleInput();
 
         do {
-            print("Enter number. Press CTRL-C to exit. Enter S for stats");
+            print("Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats");
 
-            String s = consoleInput.nextString();
+            String s = appInput.nextString();
 
-            if (s == null) {
+            if (s == null || s.trim().length() == 0) {
                 continue;
+            }
+
+            if (s.trim().toLowerCase().startsWith("exit")) {
+                return;
             }
 
             s = s.trim();
@@ -65,13 +78,13 @@ public class App {
     }
 
     private void print(String s) {
-        System.out.println(s);
+        appOutput.print(s);
     }
 
 
     public static void main(String[] args) {
 
-        App app = new App();
+        App app = new App(new ConsoleInput(), new ConsoleOutput());
 
         app.loop();
 
