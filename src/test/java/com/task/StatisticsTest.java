@@ -24,6 +24,47 @@ public class StatisticsTest
         return new TestSuite(StatisticsTest.class);
     }
 
+    /**
+     * Interestingly this test proved that incrementally calculated average (http://datagenetics.com/blog/november22017/index.html) provided
+     * less accurate result than just summing up and diving by count
+     */
+    public void testEquals() {
+        Statistics s1 = new Statistics();
+        Statistics s2 = new Statistics();
+
+        assert s1.equals(s1);
+        assert !s1.equals(null);
+        assert !s1.equals(new Object());
+        assert s1.equals(s2);
+        assert s1.hashCode() == s2.hashCode();
+
+        assertEquals(s1.hashCode(), s2.hashCode());
+
+        Random rand = new Random();
+        rand.setSeed(System.nanoTime());
+
+        int count = 100;
+
+        //check that mean calculation doesn't depend on the orders of put
+        List<Double> doubles = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            double d = rand.nextDouble();
+            doubles.add(d);
+            s1.put(new BigDecimal(d));
+        }
+
+        for (int i = count - 1; i >= 0; i--) {
+            s2.put(new BigDecimal(doubles.get(i)));
+        }
+
+        System.out.println(s1.getMean().subtract(s2.getMean()));
+        assertEquals(0, s1.getMean().compareTo(s2.getMean()));
+
+        assertEquals(s1, s2);
+
+        assert s1.hashCode() == s2.hashCode();
+    }
+
     public void testNonTerminatingDecimalExpansion() {
         Statistics stats = new Statistics();
 
@@ -143,47 +184,6 @@ public class StatisticsTest
         }
     }
 
-
-    /**
-     * Interestingly this test proved that incrementally calculated average (http://datagenetics.com/blog/november22017/index.html)
-     * provided less accurate result than just summing up and diving by count
-     */
-    public void testEquals() {
-        Statistics s1 = new Statistics();
-        Statistics s2 = new Statistics();
-
-        assert s1.equals(s1);
-        assert !s1.equals(null);
-        assert !s1.equals(new Object());
-        assert s1.equals(s2);
-        assert s1.hashCode() == s2.hashCode();
-
-        assertEquals(s1.hashCode(), s2.hashCode());
-
-        Random rand = new Random();
-        rand.setSeed(System.nanoTime());
-
-        int count = 100;
-
-        //check that mean calculation doesn't depend on the orders of put
-        List<Double> doubles = new ArrayList<>();
-        for (int i = 0; i < count; i++) {
-            double d = rand.nextDouble();
-            doubles.add(d);
-            s1.put(new BigDecimal(d));
-        }
-
-        for (int i = count - 1; i >= 0; i--) {
-            s2.put(new BigDecimal(doubles.get(i)));
-        }
-
-        System.out.println(s1.getMean().subtract(s2.getMean()));
-        assertEquals(0, s1.getMean().compareTo(s2.getMean()));
-
-        assertEquals(s1, s2);
-
-        assert s1.hashCode() == s2.hashCode();
-    }
 
     public void testEquals2() {
         Statistics s1 = new Statistics();
