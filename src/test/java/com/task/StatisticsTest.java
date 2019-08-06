@@ -221,6 +221,19 @@ public class StatisticsTest
         assert !s1.equals(s2);
     }
 
+    public void testSeriesMaxLongs() {
+        long n = 100_000;
+        Statistics s = new Statistics();
+
+        for (int i = 1; i <= n; i++) {
+            s.put(new BigDecimal(Long.MAX_VALUE));
+        }
+        BigDecimal res = new BigDecimal(Long.MAX_VALUE);
+
+        assertEquals(0, res.compareTo(s.getMean()));
+    }
+
+
     public void testSeriesDoubleN() {
         long n = 100_000;
         double d = 7.0D;
