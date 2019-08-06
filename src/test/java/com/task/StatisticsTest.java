@@ -144,6 +144,10 @@ public class StatisticsTest
     }
 
 
+    /**
+     * Interestingly this test proved that incrementally calculated average (http://datagenetics.com/blog/november22017/index.html)
+     * provided less accurate result than just summing up and diving by count
+     */
     public void testEquals() {
         Statistics s1 = new Statistics();
         Statistics s2 = new Statistics();
@@ -173,6 +177,7 @@ public class StatisticsTest
             s2.put(new BigDecimal(doubles.get(i)));
         }
 
+        System.out.println(s1.getMean().subtract(s2.getMean()));
         assertEquals(0, s1.getMean().compareTo(s2.getMean()));
 
         assertEquals(s1, s2);

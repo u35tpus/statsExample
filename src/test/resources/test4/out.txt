@@ -1,0 +1,2 @@
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
+Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
