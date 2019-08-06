@@ -2,6 +2,7 @@ package com.task;
 
 import com.task.lib.Statistics;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -218,5 +219,26 @@ public class StatisticsTest
         s1.put(new BigDecimal(0.5D));
         s2.put(new BigDecimal(1.5D));
         assert !s1.equals(s2);
+    }
+
+    public void testSeriesDoubleN() {
+        long n = 100_000;
+        double d = 7.0D;
+        Statistics s = new Statistics();
+
+        double ctr = 1.0D;
+
+        for (int i = 1; i <= n; i++) {
+            s.put(new BigDecimal(ctr));
+            ctr += d;
+        }
+
+        double sum = (2 * 1.0d + (Double.valueOf(n) - 1.0d) * d) * Double.valueOf(n) / 2.0d;
+
+        BigDecimal res = new BigDecimal(sum);
+
+        res = res.divide(new BigDecimal(n), RoundingMode.HALF_UP);
+
+        assertEquals(0, res.compareTo(s.getMean()));
     }
 }
