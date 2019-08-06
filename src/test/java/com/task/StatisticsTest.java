@@ -57,7 +57,6 @@ public class StatisticsTest
             s2.put(new BigDecimal(doubles.get(i)));
         }
 
-        System.out.println(s1.getMean().subtract(s2.getMean()));
         assertEquals(0, s1.getMean().compareTo(s2.getMean()));
 
         assertEquals(s1, s2);
