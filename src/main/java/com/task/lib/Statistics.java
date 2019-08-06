@@ -113,11 +113,15 @@ public class Statistics {
 
         return doInReadLock(() -> {
             Statistics that = (Statistics) o;
-            return Objects.equals(min, that.min) &&
-                Objects.equals(max, that.max) &&
-                Objects.equals(sum, that.sum) &&
+            return equals(min, that.min) &&
+                equals(max, that.max) &&
+                equals(sum, that.sum) &&
                 Objects.equals(count, that.count);
         });
+    }
+
+    private boolean equals(BigDecimal d1, BigDecimal d2){
+        return (d1 == d2) || (d1 != null && d2 != null && d1.compareTo(d2) == 0);
     }
 
     @Override
