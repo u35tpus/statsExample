@@ -6,6 +6,11 @@ import java.util.Objects;
 import java.util.concurrent.locks.StampedLock;
 import java.util.function.Supplier;
 
+/**
+ * Basic stats online calculator.
+ * Calculates min, max, mean.
+ * Thread safe in relation to methods put, getMean, getMax, getMin, hashCode, equals
+ */
 public class Statistics {
 
     private BigDecimal min;
@@ -18,6 +23,10 @@ public class Statistics {
 
     private final StampedLock lock = new StampedLock();
 
+    /**
+     * Puts number to collect statistics on
+     * @param number - number in string format compatible with {@code BigDecimal}
+     */
     public void put(final String number) {
         if (number == null) {
             throw new IllegalArgumentException("Can't put null");
@@ -26,6 +35,10 @@ public class Statistics {
         put(new BigDecimal(number));
     }
 
+    /**
+     * Puts number to collect statistics on
+     * @param number - number
+     */
     public void put(final BigDecimal number) {
         if (number == null) {
             throw new IllegalArgumentException("Can't put null");
@@ -45,6 +58,10 @@ public class Statistics {
         });
     }
 
+    /**
+     * Method to get the average of all numbers Statistics instance was provided so far
+     * @return returns the average of all numbers Statistics instance was provided so far
+     */
     public BigDecimal getMean() {
         return doInReadLock(() -> {
             if (count == 0) {
@@ -55,6 +72,10 @@ public class Statistics {
         });
     }
 
+    /**
+     * Method to get the minimal number of all numbers Statistics instance was provided so far
+     * @return returns the minimal number of all numbers Statistics instance was provided so far
+     */
     public BigDecimal getMin() {
         return doInReadLock(() -> {
             if (count == 0) {
@@ -65,6 +86,10 @@ public class Statistics {
         });
     }
 
+    /**
+     * Method to get the maximum number of all numbers Statistics instance was provided so far
+     * @return returns the maximum number of all numbers Statistics instance was provided so far
+     */
     public BigDecimal getMax() {
         return doInReadLock(() -> {
             if (count == 0) {
@@ -72,6 +97,29 @@ public class Statistics {
             }
             return max;
         });
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
+        return doInReadLock(() -> {
+            Statistics that = (Statistics) o;
+            return equals(min, that.min) &&
+                equals(max, that.max) &&
+                equals(sum, that.sum) &&
+                Objects.equals(count, that.count);
+        });
+    }
+
+    @Override
+    public int hashCode() {
+        return doInReadLock(() -> Objects.hash(min, max, sum, count));
     }
 
     private void processMean(BigDecimal t) {
@@ -114,30 +162,9 @@ public class Statistics {
         }
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
-            return false;
-        }
-
-        return doInReadLock(() -> {
-            Statistics that = (Statistics) o;
-            return equals(min, that.min) &&
-                equals(max, that.max) &&
-                equals(sum, that.sum) &&
-                Objects.equals(count, that.count);
-        });
-    }
-
     private boolean equals(BigDecimal d1, BigDecimal d2){
         return (d1 == d2) || (d1 != null && d2 != null && d1.compareTo(d2) == 0);
     }
 
-    @Override
-    public int hashCode() {
-        return doInReadLock(() -> Objects.hash(min, max, sum, count));
-    }
+
 }

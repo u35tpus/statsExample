@@ -10,6 +10,8 @@ Test program for calculating online stats: min, max, mean
 *  100% branch test coverage: 
  ![alt text](https://raw.githubusercontent.com/u35tpus/statsExample/master/screenshots/coverage.png)
 
+# Requirements
+* Java 8
  
 # Howto
 ## Compile and run tests
