@@ -119,8 +119,13 @@ public class StatisticsTest
         statisticsLong.put(BigDecimal.ONE);
         statisticsLong.put(BigDecimal.ONE);
         statisticsLong.put(BigDecimal.ONE.add(BigDecimal.ONE));
+        statisticsLong.put("1.5");
+        statisticsLong.put("1.99999999999999");
 
-        assertEquals(0, BigDecimal.ONE.compareTo(statisticsLong.getMin()));
+        assertEquals(0, statisticsLong.getMin().compareTo(new BigDecimal("1")));
+        assertEquals(0, statisticsLong.getMin().compareTo(new BigDecimal("1.0")));
+        assertEquals(0, statisticsLong.getMin().compareTo(new BigDecimal("1.00000")));
+        assertEquals(0, statisticsLong.getMin().compareTo(new BigDecimal("1")));
         assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal(2L)));
         assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal("2.0")));
         assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal("2")));
