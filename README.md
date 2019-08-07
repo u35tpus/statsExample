@@ -45,7 +45,8 @@ Enter number. Press CTRL-C or type 'exit' to exit. Enter S for stats
 ```  
 
 ### Interaction
-* Enter numbers one by one in the BigDecimal string representation (https://docs.oracle.com/javase/7/docs/api/java/math/BigDecimal.html#BigDecimal(java.lang.String))
+* Enter numbers in the following format: 
+  * `optional sign, '+' ( '\u002B') or '-' ('\u002D'), followed by a sequence of zero or more decimal digits ("the integer"), optionally followed by a fraction, optionally followed by an exponent.`
 * To get list of statistics, type `s` and press Enter. Each statistics is rendered in two formats:
   * optional sign, '+' ( '\u002B') or '-' ('\u002D'), followed by a sequence of zero or more decimal digits ("the integer"), optionally followed by a fraction, optionally followed by an exponent.
   * string representation of BigDecimal format in square brackets, e.g. [1.23E+8]
