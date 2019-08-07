@@ -1,6 +1,7 @@
 package com.task.lib;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.Objects;
 import java.util.concurrent.locks.StampedLock;
@@ -32,7 +33,7 @@ public class Statistics {
             throw new IllegalArgumentException("Can't put null");
         }
 
-        put(new BigDecimal(number));
+        put(new BigDecimal(number, MathContext.UNLIMITED));
     }
 
     /**
