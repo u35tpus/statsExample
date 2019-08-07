@@ -204,6 +204,16 @@ public class StatisticsTest
     }
 
 
+    public void testIncorrectString() {
+        Statistics statistics = new Statistics();
+        try {
+            statistics.put("123,a");
+            fail();
+        } catch (Exception e) {
+            assert e instanceof NumberFormatException;
+        }
+    }
+
     public void testEquals2() {
         Statistics s1 = new Statistics();
         Statistics s2 = new Statistics();
