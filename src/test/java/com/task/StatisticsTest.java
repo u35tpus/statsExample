@@ -1,6 +1,8 @@
 package com.task;
 
 import com.task.lib.Statistics;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
@@ -220,6 +222,40 @@ public class StatisticsTest
         s2.put(new BigDecimal(1.5D));
         assert !s1.equals(s2);
     }
+
+    public void testEquals3() {
+        Statistics s1 = new Statistics();
+        Statistics s2 = new Statistics();
+
+        s1.put(new BigDecimal("1.40"));
+        s2.put(new BigDecimal("1.4"));
+
+        assertEquals(s1, s2);
+    }
+
+    public void testEquals4() {
+        Statistics s1 = new Statistics();
+        Statistics s2 = new Statistics();
+
+        s1.put(new BigDecimal("1.40"));
+        s2.put(new BigDecimal("1.4"));
+
+        assertEquals(s1, s2);
+    }
+
+    public void testEqualsBigDecimals() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        Statistics s = new Statistics();
+        Method m  =  s.getClass().getDeclaredMethod("equals", BigDecimal.class, BigDecimal.class);
+        m.setAccessible(true);
+
+        assert (Boolean) m.invoke(s, null, null);
+
+        assert !(Boolean)m.invoke(s, BigDecimal.ZERO, null);
+        assert !(Boolean)m.invoke(s, BigDecimal.ZERO, BigDecimal.ONE);
+        assert (Boolean)m.invoke(s, BigDecimal.ONE, BigDecimal.ONE);
+        assert !(Boolean)m.invoke(s, null, BigDecimal.ZERO);
+    }
+
 
     public void testSeriesMaxLongs() {
         long n = 100_000;

@@ -31,16 +31,14 @@ public class Statistics {
             throw new IllegalArgumentException("Can't put null");
         }
 
-        long stamp = lock.writeLock();
-        try {
+        doInWriteLock(() -> {
             count++;
 
             processMin(number);
             processMax(number);
             processMean(number);
-        } finally {
-            lock.unlockWrite(stamp);
-        }
+            return null;
+        });
     }
 
     public BigDecimal getMean() {
@@ -99,6 +97,16 @@ public class Statistics {
             return supplier.get();
         } finally {
             lock.unlockRead(stamp);
+        }
+    }
+
+    private <T> T doInWriteLock(Supplier<T> supplier) {
+        long stamp = lock.writeLock();
+
+        try {
+            return supplier.get();
+        } finally {
+            lock.unlockWrite(stamp);
         }
     }
 
