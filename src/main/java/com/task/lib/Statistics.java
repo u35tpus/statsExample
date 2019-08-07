@@ -31,6 +31,10 @@ public class Statistics {
             throw new IllegalArgumentException("Can't put null");
         }
 
+        if (! (number.getClass().equals(BigDecimal.class))) {
+            throw new IllegalArgumentException("Only BigDecimal accepted");
+        }
+
         doInWriteLock(() -> {
             count++;
 

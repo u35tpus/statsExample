@@ -160,6 +160,23 @@ public class StatisticsTest
         assertEquals(new BigDecimal(150), stats.getMean());
     }
 
+    public void testNoInheritance() {
+        Statistics stats = new Statistics();
+
+        try {
+            stats.put(new BigDecimal(1) {
+                @Override
+                public BigDecimal min(BigDecimal val) {
+                    return BigDecimal.ZERO;
+                }
+            });
+
+            fail();
+        } catch (Exception e) {
+            assert e instanceof IllegalArgumentException;
+        }
+    }
+
 
     public void testMeanLongSequence() {
         Statistics stats = new Statistics();
@@ -245,15 +262,15 @@ public class StatisticsTest
 
     public void testEqualsBigDecimals() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
         Statistics s = new Statistics();
-        Method m  =  s.getClass().getDeclaredMethod("equals", BigDecimal.class, BigDecimal.class);
+        Method m = s.getClass().getDeclaredMethod("equals", BigDecimal.class, BigDecimal.class);
         m.setAccessible(true);
 
         assert (Boolean) m.invoke(s, null, null);
 
-        assert !(Boolean)m.invoke(s, BigDecimal.ZERO, null);
-        assert !(Boolean)m.invoke(s, BigDecimal.ZERO, BigDecimal.ONE);
-        assert (Boolean)m.invoke(s, BigDecimal.ONE, BigDecimal.ONE);
-        assert !(Boolean)m.invoke(s, null, BigDecimal.ZERO);
+        assert !(Boolean) m.invoke(s, BigDecimal.ZERO, null);
+        assert !(Boolean) m.invoke(s, BigDecimal.ZERO, BigDecimal.ONE);
+        assert (Boolean) m.invoke(s, BigDecimal.ONE, BigDecimal.ONE);
+        assert !(Boolean) m.invoke(s, null, BigDecimal.ZERO);
     }
 
 
