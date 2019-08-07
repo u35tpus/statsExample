@@ -122,6 +122,9 @@ public class StatisticsTest
 
         assertEquals(0, BigDecimal.ONE.compareTo(statisticsLong.getMin()));
         assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal(2L)));
+        assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal("2.0")));
+        assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal("2")));
+        assertEquals(0, statisticsLong.getMax().compareTo(new BigDecimal("2.0000")));
     }
 
     public void testMinMaxNull() {
