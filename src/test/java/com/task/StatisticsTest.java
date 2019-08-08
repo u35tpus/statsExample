@@ -232,6 +232,7 @@ public class StatisticsTest
 
         s2.put(BigDecimal.ONE);
         assert s1.equals(s2);
+        assertEquals(s1.hashCode(), s2.hashCode());
 
         s1.put(BigDecimal.ZERO);
         assert !s1.equals(s2);
